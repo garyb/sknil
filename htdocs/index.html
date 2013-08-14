@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Sknil</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="js/sknil.js"></script>
+</head>
+
+<body>
+
+    <div id="container">
+
+        <div id="header">
+            <h1>Sknil</h1>
+            <input type="text" placeholder="search..." id="search"/>
+        </div>
+        
+        <div id="none">
+            <h2>No sknils found...</h2>
+        </div>
+        
+        <ul id="sknils">
+            <li class="item template">
+                <a href="#" class="link"><h2 class="title"></h2></a>
+                <div class="url"></div>
+            </li>
+        </ul>
+        
+        <div id="add">
+            <form>
+                <h2>Add sknil</h2>
+                <input type="text" name="title" placeholder="Title" />
+                <input type="text" name="url" placeholder="URL" />
+                <input type="submit" value="Add" />
+                <div class="msg"></div>
+            </form>
+        </div>
+    
+    </div>
+  
+</body>
+</html>
