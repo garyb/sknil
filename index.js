@@ -48,12 +48,34 @@ app.post("/sknil/new", express.bodyParser(), function (req, res) {
         return;
     }
     
+    if (_.findWhere(sknils, { url: url })) {
+        res.json({ success: false, msg: "A sknil with that URL already exists" });
+        return;
+    }
+    
     sknils.unshift({ title: title, url: url, date: new Date() });
     
     database.save(sknils)
         .then(function () {
             res.json({ success: true });
         });
+});
+
+app.post("/sknil/delete", express.bodyParser(), function (req, res) {
+
+    var url = req.body.url;
+    
+    var i = sknils.indexOf(_.findWhere(sknils, { url: url }));
+    if (i === -1) {
+        res.json({ success: false, msg: "The sknil does not exist" });
+    } else {
+        sknils.splice(i, 1);
+        database.save(sknils)
+        .then(function () {
+            res.json({ success: true });
+        });
+    }
+
 });
 
 database.load()

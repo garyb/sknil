@@ -12,6 +12,12 @@ $(function () {
     var $template = $list.find(".template");
     $template.remove();
     
+    var loadAll = function () {
+        $.get("sknil/all").done(function (items) {
+            populate(items);
+        });
+    };
+    
     var populate = function (items, query) {
         
         $list.empty();
@@ -24,7 +30,7 @@ $(function () {
             else query = null;
         }
     
-        for (var i = 0, item; item = items[i]; i++) {
+        items.forEach(function (item) {
             var $item = $template.clone();
             if (query) {
                 var ix = item.title.toLowerCase().indexOf(query);
@@ -40,8 +46,21 @@ $(function () {
             
             $item.find(".url").text(item.url);
             $item.find("a.link").attr("href", item.url);
+            $item.find(".delete").on("click", function () {
+                if (confirm("Are you sure you want to delete this sknil?")) {
+                    $.post("sknil/delete", { url: item.url })
+                        .done(function (result) {
+                            if (!result.success) {
+                                alert(result.msg);
+                            } else {
+                                loadAll();
+                            }
+                        });
+                }
+                return false;
+            });
             $list.append($item);
-        }
+        });
     };
     
     $("#search").on("input", function () {
@@ -69,14 +88,12 @@ $(function () {
                     $msg.addClass("success");
                     $msg.text("New sknil added successfully");
                 }
+                loadAll();
             });
         return false;
     
     });
 
-    $.get("sknil/all")
-        .done(function (items) {
-            populate(items);
-        });
+    loadAll();
 
 });
